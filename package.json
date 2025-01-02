@@ -14,8 +14,11 @@
     "@radix-ui/react-slot": "^1.1.1",
     "autoprefixer": "^10.4.18",
     "axios": "^1.7.9",
+<<<<<<< HEAD
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+=======
+>>>>>>> 22c24a9ff1c7bc0710b702d160a717a1aef6b60e
     "framer-motion": "^11.0.8",
     "gsap": "^3.12.5",
     "jquery": "^3.7.1",
