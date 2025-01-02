@@ -11,7 +11,7 @@ const Team = () => {
     console.log("Making API Request");
     const fetchTeamData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/users');
+        const response = await axios.get('http://localhost:8000/users');
         console.log(response.data); // Check the structure of the response in the console
         setTeamMembers(response.data); // Update the state with fetched data
       } catch (err) {
@@ -53,7 +53,7 @@ const Team = () => {
               className="backdrop-blur-lg bg-black/10 rounded-2xl overflow-hidden border border-cyan-500/50 hover:bg-white/20 transition-all duration-300"
             >
               <img
-                src={member.ImageURL}
+                src={member.ProfilePicture}
                 alt={member.Name}
                 className="w-full h-64 object-cover"
               />
