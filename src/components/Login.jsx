@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Button from './Button';
 import { useAuth } from '../context/AuthContext';
+import { signInWithGoogle, handleGoogleCallback } from '../services/auth';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,22 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const code = searchParams.get('code');
+    if (code) {
+      handleGoogleCallback(code)
+        .then((response) => {
+          login(response.user);
+          navigate('/events');
+        })
+        .catch((error) => {
+          console.error('Google callback error:', error);
+          setError('Failed to complete Google sign-in');
+        });
+    }
+  }, [searchParams, login, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -24,7 +41,6 @@ const Login = () => {
     e.preventDefault();
     setError('');
 
-    // Basic validation
     if (!formData.name || !formData.email || !formData.password) {
       setError('Please fill in all fields');
       return;
@@ -40,6 +56,15 @@ const Login = () => {
       navigate('/events');
     } catch (err) {
       setError('Invalid credentials');
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      console.error('Google sign-in error:', error);
+      setError('Failed to initiate Google sign-in');
     }
   };
 
@@ -91,7 +116,7 @@ const Login = () => {
             />
           </div>
 
-          <div className="flex items-center justify-center w-full h-1/2 mt-4">
+          <div className="flex items-center justify-center w-full mt-4">
             <Button
               type="submit"
               text='Login'
@@ -100,6 +125,21 @@ const Login = () => {
             />
           </div>
         </form>
+
+        <div className="flex items-center gap-4 w-full my-6">
+          <div className="flex-1 h-px bg-cyan-500/30"></div>
+          <span className="text-gray-400">or</span>
+          <div className="flex-1 h-px bg-cyan-500/30"></div>
+        </div>
+
+        <div className="flex justify-center">
+          <Button
+            onClick={handleGoogleSignIn}
+            text="Sign in with Google"
+            textSize="text-lg"
+            iconLink={<i className="ri-google-fill text-2xl"></i>}
+          />
+        </div>
       </div>
     </div>
   );

@@ -1,3 +1,5 @@
+    
+
         .floating-shapes {
             position: fixed;
             width: 100vw;
@@ -111,4 +113,7 @@
                 transform: translate(0, 0) rotate(360deg) scale(1);
                 opacity: 0.5;
             }
+        }
+        .alreadysignedup {
+            display: none;
         }

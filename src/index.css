@@ -1,6 +1,19 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+ * {
+     padding: 0;
+     margin: 0;
+     box-sizing: border-box;
+ }
+ 
+ html,body {
+     height: 100vh;
+     width: 100vw;
+   position:sticky;
+     }
+
+
 
 :root {
   --background-color: #010038;
@@ -17,6 +30,6 @@
   scroll-behavior: smooth;
 }
 
-body {
-  @apply bg-gray-50;
-}
+/* body {
+  background-color: #f9fafb; /* Equivalent to bg-gray-50 in Tailwind CSS 
+}*/

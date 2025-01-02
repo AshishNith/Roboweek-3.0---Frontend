@@ -1,17 +1,29 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Button from './Button';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
+  const auth = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  if (!auth) {
+    console.warn('useAuth returned null. Ensure AuthProvider is wrapping the component tree.');
+    return null; // Fallback UI if `useAuth` fails
+  }
+
+  const { user, logout } = auth;
 
   const handleLogout = () => {
-    logout();
-    navigate('/');
+    if (logout) {
+      logout();
+      navigate('/');
+    } else {
+      console.error('Logout function is not defined in the Auth context.');
+    }
   };
 
   const navigation = [
@@ -39,19 +51,19 @@ const Navbar = () => {
         {user ? (
           <div className="flex items-center gap-4">
             <div onClick={handleLogout}>
-              <Button 
-                text="Logout" 
-                textSize="text-2xl" 
-                iconLink={<i className="ri-logout-box-line text-3xl"></i>} 
+              <Button
+                text="Logout"
+                textSize="text-2xl"
+                iconLink={<i className="ri-logout-box-line text-3xl"></i>}
               />
             </div>
           </div>
         ) : (
           <Link to="/login">
-            <Button 
-              text="Login" 
-              textSize="text-2xl" 
-              iconLink={<i className="ri-login-box-line text-3xl"></i>} 
+            <Button
+              text="Login"
+              textSize="text-2xl"
+              iconLink={<i className="ri-login-box-line text-3xl"></i>}
             />
           </Link>
         )}
@@ -75,7 +87,9 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-gray-300 hover:text-cyan-400 hover:bg-cyan-500/10 transition-all duration-300 ${
+                className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl ${
+                  location.pathname === item.href ? 'bg-cyan-500/20 text-cyan-400' : 'text-gray-300'
+                } hover:text-cyan-400 hover:bg-cyan-500/10 transition-all duration-300 ${
                   !isOpen && 'justify-center'
                 } group relative`}
               >
