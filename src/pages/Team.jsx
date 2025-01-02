@@ -1,33 +1,33 @@
 import { motion } from 'framer-motion';
+import { useEffect,useState } from 'react';
+import axios from 'axios';
 import Button from '../components/Button';
 
 const Team = () => {
-  const teamMembers = [
-    {
-      name: "Aakash Tiwari",
-      role: "Event Director",
-      image: "https://www.robosocnith.in/_next/image?url=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Frobosoc-database.appspot.com%2Fo%2Fmembers%252FIMG_20220413_172022.jpg%2520%25201697021957523%3Falt%3Dmedia%26token%3D8fb3c886-0436-4585-bd73-a5111d25017d&w=1920&q=75",
-      bio: "Robotics enthusiast with 10+ years of experience in organizing tech events."
-    },
-    {
-      name: "Ashish Ranjan", 
-      role: "Technical Lead",
-      image: "https://i.pravatar.cc/300?img=2",
-      bio: "AI researcher and robotics engineer specializing in autonomous systems."
-    },
-    {
-      name: "Ritwiz Singh",
-      role: "Operations Manager", 
-      image: "https://i.pravatar.cc/300?img=1",
-      bio: "Expert in event management and community building."
-    },
-    {
-      name: "Nitya",
-      role: "Sponsorship Coordinator",
-      image: "https://i.pravatar.cc/300?img=4", 
-      bio: "Experienced in building partnerships with tech industry leaders."
-    }
-  ];
+  const [teamMembers,setTeamMembers]=useState([]);
+  const [loading,setLoading]=useState(true);
+
+  useEffect(() => {
+    console.log("Making API Request");
+    const fetchTeamData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/users');
+        console.log(response.data); // Check the structure of the response in the console
+        setTeamMembers(response.data); // Update the state with fetched data
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTeamData();
+  }, []);
+
+
+  if(loading){
+    return <div>Loading...</div>
+  }
+
 
   return (
     <div className="min-h-screen py-20 z-1000">
@@ -53,14 +53,40 @@ const Team = () => {
               className="backdrop-blur-lg bg-black/10 rounded-2xl overflow-hidden border border-cyan-500/50 hover:bg-white/20 transition-all duration-300"
             >
               <img
-                src={member.image}
-                alt={member.name}
+                src={member.ImageURL}
+                alt={member.Name}
                 className="w-full h-64 object-cover"
               />
               <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-2">{member.name}</h3>
-                <div className="text-cyan-400 font-semibold mb-4">{member.role}</div>
-                <p className="text-gray-300">{member.bio}</p>
+                <h3 className="text-xl font-bold text-white mb-2">{member.Name}</h3>
+                <div className="text-cyan-400 font-semibold mb-4">{member.Post}</div>
+                <p className="text-gray-300">{member.TechStack}</p>
+                <div className="flex justify-between mt-4">
+                  <a
+                    href={member.Github}
+                    className="text-cyan-400 hover:text-white"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>
+                  <a
+                    href={member.LinkedIn}
+                    className="text-cyan-400 hover:text-white"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    LinkedIn
+                  </a>
+                  <a
+                    href={member.Instagram}
+                    className="text-cyan-400 hover:text-white"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Instagram
+                  </a>
+                </div>
               </div>
             </motion.div>
           ))}
