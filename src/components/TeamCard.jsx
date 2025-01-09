@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import "./TeamCard.css";
+import "./teamCard.css";
 
 const TeamCard = ({ member }) => {
   return (
