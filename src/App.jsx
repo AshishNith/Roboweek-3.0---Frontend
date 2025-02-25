@@ -8,8 +8,9 @@ import Team from './pages/Team';
 import Sponsors from './pages/Sponsors';
 import FloatingShape from './components/FloatingShape';
 import ConferencePage from './pages/ConferencePage';
-import SplashCursor from './blocks/Animations/SplashCursor/SplashCursor.jsx'
+import SplashCursor from './blocks/Animations/SplashCursor/SplashCursor.jsx';
 import SquidLoader from './components/Loader.jsx';
+import ChatBot from './components/Chatbot';
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const Layout = ({ children }) => {
     <div id='main-container' className="flex flex-col bg-black">
       <Navbar />
       <FloatingShape />
+      <ChatBot /> 
       <main className="w-screen min-h-screen flex-grow">
         {children}
       </main>
@@ -39,11 +41,10 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<SquidLoader />} />
-          <Route path="/Home" element={<Home />} />
+          <Route path="/home" element={<Home />} /> {/* Fixed path casing */}
           <Route path="/about" element={<About />} />
           <Route path="/events" element={<Events />} />
           <Route path="/team" element={<Team />} />
-          <Route path="/ashish" element={<Events />} />
           <Route path="/sponsors" element={<Sponsors />} />
           <Route path="/conference" element={<ConferencePage />} />
         </Routes>
